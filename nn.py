@@ -4,7 +4,10 @@ from keras.layers import Dense
 from keras import optimizers
 import numpy as np
 
-X_train, X_test, y_train, y_test = preprocessing.preprocess(0.3, False)
+X_train, X_test, trainY, testY = preprocessing.preprocess(0.3, False)
+trainY = trainY.replace(['B','M'],[1,2])
+X_train = X_train.values
+trainY = trainY.values
 
 # Initialize
 NUM_FEATURES = 30
@@ -19,10 +22,15 @@ seed = 10
 epochs = 50
 np.random.seed(seed)
 
+# create a matrix of dimension train_y row x 2 filled with zeros 
+y_train = np.zeros((trainY.shape[0], NUM_CLASSES))
+# create classification matrix
+y_train[np.arange(trainY.shape[0]), trainY-1] = 1 #one hot matrix
+
 # Build network
 model = Sequential()
 model.add(Dense(num_neurons, input_dim=NUM_FEATURES, activation='relu'))
 model.add(Dense(NUM_CLASSES, activation='softmax'))
 sgd = optimizers.SGD(lr=learning_rate, decay=decay)
 model.compile(loss='binary_crossentropy', optimizer=sgd, metrics=['accuracy'])
-# model.fit(X_train, y_train, epochs=epochs)
+model.fit(X_train, y_train, epochs=epochs)
