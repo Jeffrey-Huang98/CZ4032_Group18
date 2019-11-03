@@ -15,7 +15,7 @@ NUM_FEATURES = 30
 NUM_CLASSES = 2
 
 learning_rate = 0.01
-epochs = 500
+num_epochs = 1000
 batch_size = 32
 num_neurons = 10
 decay = 1e-6
@@ -34,12 +34,11 @@ model.add(Dense(num_neurons, input_dim=NUM_FEATURES, activation='relu'))
 model.add(Dense(NUM_CLASSES, activation='softmax'))
 sgd = optimizers.SGD(lr=learning_rate, decay=decay)
 model.compile(loss='binary_crossentropy', optimizer=sgd, metrics=['accuracy'])
-history = model.fit(X_train, y_train, epochs=epochs)
+history = model.fit(X_train, y_train, epochs=num_epochs)
 
 plt.figure(1)
 plt.plot(range(epochs), history.history['accuracy'])
 plt.xlabel(str(epochs) + ' iterations')
 plt.ylabel('Accuracy')
-plt.legend(loc='lower right')
 
 plt.show()
