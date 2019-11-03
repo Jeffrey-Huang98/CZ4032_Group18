@@ -3,6 +3,7 @@ from keras.models import Sequential
 from keras.layers import Dense
 from keras import optimizers
 import numpy as np
+import pylab as plt
 
 X_train, X_test, trainY, testY = preprocessing.preprocess(0.3, False)
 trainY = trainY.replace(['B','M'],[1,2])
@@ -33,4 +34,12 @@ model.add(Dense(num_neurons, input_dim=NUM_FEATURES, activation='relu'))
 model.add(Dense(NUM_CLASSES, activation='softmax'))
 sgd = optimizers.SGD(lr=learning_rate, decay=decay)
 model.compile(loss='binary_crossentropy', optimizer=sgd, metrics=['accuracy'])
-model.fit(X_train, y_train, epochs=epochs)
+history = model.fit(X_train, y_train, epochs=epochs)
+
+plt.figure(1)
+plt.plot(range(epochs), history.history['accuracy'])
+plt.xlabel(str(epochs) + ' iterations')
+plt.ylabel('Accuracy')
+plt.legend(loc='lower right')
+
+plt.show()
