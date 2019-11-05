@@ -15,6 +15,16 @@ def precision_m(y_true, y_pred):
     precision = true_positives / (predicted_positives + K.epsilon())
     return precision
 
+def remove_features(num_features, x, y):
+    estimator = SVR(kernel='linear')
+    selector = RFE(estimator, num_features, step=1)
+    selector = selector.fit(x, y)
+    arr = selector.support_
+    remove = []
+    for i in range(arr.size):
+        if not arr[i]:
+            remove.append(i)
+    return np.delete(X_train, remove, 1)
 
 # Initialize
 NUM_FEATURES = 30
@@ -51,20 +61,6 @@ model.add(Dense(NUM_CLASSES, activation='softmax'))
 sgd = optimizers.SGD(lr=learning_rate, decay=decay)
 model.compile(loss='binary_crossentropy', optimizer=sgd, metrics=['accuracy', precision_m])
 history = model.fit(X_train, y_train, epochs=num_epochs)
-
-estimator = SVR(kernel='linear')
-selector = RFE(estimator, 5, step=1)
-selector = selector.fit(X_train, trainY)
-print(selector.support_)
-print(selector.ranking_)
-arr = selector.support_
-remove = []
-for i in range(arr.size):
-    if not arr[i]:
-        remove.append(i)
-print(remove)
-print(X_train[1])
-print(np.delete(X_train, remove, 1)[1])
 
 plt.figure(1)
 plt.plot(range(epochs), history.history['accuracy'], label='Accuracy')
