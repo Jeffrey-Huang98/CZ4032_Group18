@@ -5,13 +5,8 @@ from keras import optimizers
 import numpy as np
 import pylab as plt
 from keras import backend as K
-
-
-def recall_m(y_true, y_pred):
-    true_positives = K.sum(K.round(K.clip(y_true * y_pred, 0, 1)))
-    possible_positives = K.sum(K.round(K.clip(y_true, 0, 1)))
-    recall = true_positives / (possible_positives + K.epsilon())
-    return recall
+from sklearn.feature_selection import RFE
+from sklearn.svm import SVR
 
 
 def precision_m(y_true, y_pred):
@@ -20,20 +15,6 @@ def precision_m(y_true, y_pred):
     precision = true_positives / (predicted_positives + K.epsilon())
     return precision
 
-
-def f1_m(y_true, y_pred):
-    precision = precision_m(y_true, y_pred)
-    recall = recall_m(y_true, y_pred)
-    return 2*((precision*recall) / (precision+recall + K.epsilon()))
-
-
-X_train, X_test, trainY, testY = preprocessing.preprocess(0.3, False)
-trainY = trainY.replace(['B', 'M'], [1, 2])
-X_train = X_train.values
-trainY = trainY.values
-testY = testY.replace(['B', 'M'], [1, 2])
-X_test = X_test.values
-testY = testY.values
 
 # Initialize
 NUM_FEATURES = 30
@@ -48,6 +29,14 @@ seed = 10
 epochs = 50
 np.random.seed(seed)
 
+X_train, X_test, trainY, testY = preprocessing.preprocess(0.3, False)
+trainY = trainY.replace(['B', 'M'], [1, 2])
+X_train = X_train.values
+trainY = trainY.values
+testY = testY.replace(['B', 'M'], [1, 2])
+X_test = X_test.values
+testY = testY.values
+
 # create a matrix of dimension train_y row x 2 filled with zeros
 y_train = np.zeros((trainY.shape[0], NUM_CLASSES))
 y_test = np.zeros((testY.shape[0], NUM_CLASSES))
@@ -60,14 +49,18 @@ model = Sequential()
 model.add(Dense(num_neurons, input_dim=NUM_FEATURES, activation='relu'))
 model.add(Dense(NUM_CLASSES, activation='softmax'))
 sgd = optimizers.SGD(lr=learning_rate, decay=decay)
-model.compile(loss='binary_crossentropy', optimizer=sgd, metrics=['accuracy', f1_m, precision_m, recall_m])
+model.compile(loss='binary_crossentropy', optimizer=sgd, metrics=['accuracy', precision_m])
 history = model.fit(X_train, y_train, epochs=num_epochs)
+
+estimator = SVR(kernel='linear')
+selector = RFE(estimator, 5, step=1)
+selector = selector.fit(X_train, trainY)
+print(selector.support_)
+print(selector.ranking_)
 
 plt.figure(1)
 plt.plot(range(epochs), history.history['accuracy'], label='Accuracy')
-plt.plot(range(epochs), history.history['f1_m'], label='F1 score')
 plt.plot(range(epochs), history.history['precision_m'], label='Precision')
-plt.plot(range(epochs), history.history['recall_m'], label='Recall')
 plt.xlabel(str(epochs) + ' iterations')
 plt.ylabel('Metrics')
 plt.legend(loc='lower right')
