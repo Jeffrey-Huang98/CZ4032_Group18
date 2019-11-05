@@ -40,20 +40,20 @@ epochs = 50
 np.random.seed(seed)
 
 # preprocess data
-X_train, X_test, trainY, testY = preprocessing.preprocess(0.3, False)
+trainX, testX, trainY, testY = preprocessing.preprocess(0.3, False)
 trainY = trainY.replace(['B', 'M'], [1, 2])
-X_train = X_train.values
+trainX = trainX.values
 trainY = trainY.values
 testY = testY.replace(['B', 'M'], [1, 2])
-X_test = X_test.values
+testX = testX.values
 testY = testY.values
 
 # create a matrix of dimension train_y row x 2 filled with zeros
-y_train = np.zeros((trainY.shape[0], NUM_CLASSES))
-y_test = np.zeros((testY.shape[0], NUM_CLASSES))
+trainY_onehot = np.zeros((trainY.shape[0], NUM_CLASSES))
+testY_onehot = np.zeros((testY.shape[0], NUM_CLASSES))
 # create classification matrix
-y_train[np.arange(trainY.shape[0]), trainY-1] = 1  # one hot matrix
-y_test[np.arange(testY.shape[0]), testY-1] = 1  # one hot matrix
+trainY_onehot[np.arange(trainY.shape[0]), trainY-1] = 1  # one hot matrix
+testY_onehot[np.arange(testY.shape[0]), testY-1] = 1  # one hot matrix
 
 # Build network
 model = Sequential()
@@ -61,7 +61,12 @@ model.add(Dense(num_neurons, input_dim=NUM_FEATURES, activation='relu'))
 model.add(Dense(NUM_CLASSES, activation='softmax'))
 sgd = optimizers.SGD(lr=learning_rate, decay=decay)
 model.compile(loss='binary_crossentropy', optimizer=sgd, metrics=['accuracy', precision_m])
-history = model.fit(X_train, y_train, epochs=num_epochs)
+history = model.fit(trainX, trainY_onehot, epochs=num_epochs)
+
+# reduce number of features to 10
+reducedX = remove_features(10, trainX, trainY)
+print(trainX[0])
+print(reducedX[0])
 
 plt.figure(1)
 plt.plot(range(epochs), history.history['accuracy'], label='Accuracy')
