@@ -24,7 +24,7 @@ def remove_features(num_features, x, y):
     for i in range(arr.size):
         if not arr[i]:
             remove.append(i)
-    return np.delete(X_train, remove, 1)
+    return np.delete(x, remove, 1)
 
 # Initialize
 NUM_FEATURES = 30
@@ -39,6 +39,7 @@ seed = 10
 epochs = 50
 np.random.seed(seed)
 
+# preprocess data
 X_train, X_test, trainY, testY = preprocessing.preprocess(0.3, False)
 trainY = trainY.replace(['B', 'M'], [1, 2])
 X_train = X_train.values
