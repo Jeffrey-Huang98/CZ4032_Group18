@@ -13,8 +13,8 @@ y_kmeans = kmeans.fit_predict(x_train)
 centers = kmeans.cluster_centers_
 
 # plot the clusters
-plt.scatter(x_train[y_kmeans == 0, 0], x_train[y_kmeans == 0, 1], s = 100, c = 'red', label = '0')
-plt.scatter(x_train[y_kmeans == 1, 0], x_train[y_kmeans == 1, 1], s = 100, c = 'blue', label = '1')
+plt.scatter(x_train[y_kmeans == 0, 0], x_train[y_kmeans == 0, 1], s = 7, c = 'red', label = '0')
+plt.scatter(x_train[y_kmeans == 1, 0], x_train[y_kmeans == 1, 1], s = 7, c = 'blue', label = '1')
 
 #Plotting the centroids of the clusters
 plt.scatter(kmeans.cluster_centers_[:, 0], kmeans.cluster_centers_[:,1], s = 100, c = 'yellow', label = 'Center')
