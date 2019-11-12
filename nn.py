@@ -9,12 +9,6 @@ from sklearn.feature_selection import RFE
 from sklearn.svm import SVR
 
 
-def precision_m(y_true, y_pred):
-    true_positives = K.sum(K.round(K.clip(y_true * y_pred, 0, 1)))
-    predicted_positives = K.sum(K.round(K.clip(y_pred, 0, 1)))
-    precision = true_positives / (predicted_positives + K.epsilon())
-    return precision
-
 def remove_features(num_features, x, y):
     estimator = SVR(kernel='linear')
     selector = RFE(estimator, num_features, step=1)
@@ -31,21 +25,20 @@ NUM_FEATURES = 30
 NUM_CLASSES = 2
 
 learning_rate = 0.01
-num_epochs = 50
+num_epochs = 500
 batch_size = 32
 num_neurons = 10
 decay = 1e-6
 seed = 10
-epochs = 50
 np.random.seed(seed)
 
 # preprocess data
-trainX, testX, trainY, testY = preprocessing.preprocess(0.3, False)
-trainY = trainY.replace(['B', 'M'], [1, 2])
-trainX = trainX.values
+trainX_p, testX_p, trainY_p, testY_p = preprocessing.preprocess(0.3, False)
+trainY = trainY_p.replace(['B', 'M'], [1, 2])
+trainX = trainX_p.values
 trainY = trainY.values
-testY = testY.replace(['B', 'M'], [1, 2])
-testX = testX.values
+testY = testY_p.replace(['B', 'M'], [1, 2])
+testX = testX_p.values
 testY = testY.values
 
 # create a matrix of dimension train_y row x 2 filled with zeros
@@ -55,23 +48,21 @@ testY_onehot = np.zeros((testY.shape[0], NUM_CLASSES))
 trainY_onehot[np.arange(trainY.shape[0]), trainY-1] = 1  # one hot matrix
 testY_onehot[np.arange(testY.shape[0]), testY-1] = 1  # one hot matrix
 
-# Build network
-model = Sequential()
-model.add(Dense(num_neurons, input_dim=NUM_FEATURES, activation='relu'))
-model.add(Dense(NUM_CLASSES, activation='softmax'))
-sgd = optimizers.SGD(lr=learning_rate, decay=decay)
-model.compile(loss='binary_crossentropy', optimizer=sgd, metrics=['accuracy', precision_m])
-history = model.fit(trainX, trainY_onehot, epochs=num_epochs)
+history = []
+features = [10, 15, 20, 25, 30]
+for x in features:
+    tmp = remove_features(x, trainX, trainY)
+    model = Sequential()
+    model.add(Dense(num_neurons, input_dim=x, activation='relu'))
+    model.add(Dense(NUM_CLASSES, activation='softmax'))
+    sgd = optimizers.SGD(lr=learning_rate, decay=decay)
+    model.compile(loss='binary_crossentropy', optimizer=sgd, metrics=['accuracy'])
+    history.append(model.fit(tmp, trainY_onehot, epochs=num_epochs))
 
-# reduce number of features to 10
-reducedX = remove_features(10, trainX, trainY)
-print(trainX[0])
-print(reducedX[0])
-
-plt.figure(1)
-plt.plot(range(epochs), history.history['accuracy'], label='Accuracy')
-plt.plot(range(epochs), history.history['precision_m'], label='Precision')
-plt.xlabel(str(epochs) + ' iterations')
+plt.figure()
+for i in range(len(features)):
+    plt.plot(range(num_epochs), history[i].history['accuracy'], label=str(features[i]) + ' features')
+plt.xlabel(str(num_epochs) + ' iterations')
 plt.ylabel('Metrics')
 plt.legend(loc='lower right')
 
