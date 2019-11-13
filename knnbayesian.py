@@ -1,9 +1,12 @@
-import preprocessing
+import utils
 import pylab as plt
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score
 from sklearn.naive_bayes import GaussianNB
 
+
+# preprocess data
+trainX_, testX_, trainY_, testY_ = utils.preprocess(0.3, False)
 
 print("k-Nearest Neighbours...")
 K = [3, 5, 7, 11, 13, 17, 19]
@@ -13,8 +16,8 @@ knn_acc = []
 for k in K:
     knn_acc_ = []
     for feat in features:
-        # preprocess data
-        trainX, testX, trainY, testY = preprocessing.preprocess(0.3, False, feat)
+        # reduce feature
+        trainX, testX, trainY, testY = utils.remove_features(feat, trainX_, testX_, trainY_, testY_)
 
         # k-Nearest Neighbour
         model = KNeighborsClassifier(n_neighbors=k, weights='distance')
@@ -60,8 +63,8 @@ print("Best k %d, best no of features %d, kNN accuracy %g\n"%(best_k, best_knn_f
 print("Naive Bayesian...")
 NB_acc = []
 for feat in features:
-    # preprocess data
-    trainX, testX, trainY, testY = preprocessing.preprocess(0.3, False, feat)
+    # reduce feature
+    trainX, testX, trainY, testY = utils.remove_features(feat, trainX_, testX_, trainY_, testY_)
 
     # k-Nearest Neighbour
     model = GaussianNB()

@@ -1,10 +1,10 @@
 import numpy as np # linear algebra
 import pandas as pd # data processing
 import matplotlib.pyplot as plt
-import preprocessing
+import utils
 
 # preprocess data
-trainX, testX, trainY, testY = preprocessing.preprocess(0.3, False)
+trainX, testX, trainY, testY = utils.preprocess(0.3, False)
 
 X = pd.concat([trainX, testX], ignore_index=True)
 X = X.values

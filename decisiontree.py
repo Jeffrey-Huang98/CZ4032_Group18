@@ -1,4 +1,4 @@
-import preprocessing
+import utils
 from sklearn.feature_selection import RFE
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.tree import DecisionTreeClassifier
@@ -10,13 +10,17 @@ import pydotplus
 import os
 import pylab as plt
 
+
+# preprocess data
+trainX_, testX_, trainY_, testY_ = utils.preprocess(0.3, False)
+
 features = [10, 15, 20, 25, 30]
 dectree_accuracy = []
 
 best_acc = 0
 for feat in features:
-    # preprocess data
-    trainX, testX, trainY, testY = preprocessing.preprocess(0.3, False, feat)
+    # reduce feature
+    trainX, testX, trainY, testY = utils.remove_features(feat, trainX_, testX_, trainY_, testY_)
 
     # build decision tree
     dec_tree = DecisionTreeClassifier(criterion="entropy")
@@ -46,8 +50,8 @@ print("Decision tree accuracy:", dectree_accuracy)
 print("Best no of features %d accuracy: %g"%(best_feat, best_acc))
 
 
-# preprocess data
-trainX, testX, trainY, testY = preprocessing.preprocess(0.3, False, best_feat)
+# reduce feature
+trainX, testX, trainY, testY = utils.remove_features(best_feat, trainX_, testX_, trainY_, testY_)
 
 # build decision tree
 dec_tree = DecisionTreeClassifier(criterion="entropy")
