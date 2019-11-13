@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import preprocessing
 
 # preprocess data
-trainX, testX, trainY, testY = preprocessing.preprocess(0.3, False)
+trainX, testX, trainY, testY = preprocessing.preprocess(0.3, False, 30)
 
 X = pd.concat([trainX, testX], ignore_index=True)
 X = X.values
