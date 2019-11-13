@@ -22,10 +22,10 @@ kY = kmns.fit_predict(X)
 
 f, (ax1, ax2) = plt.subplots(1, 2, sharey=True)
 
-ax1.scatter(X[:,0],X[:,1],  c=kY, cmap = "jet", edgecolor = "None", alpha=0.35)
+ax1.scatter(Y[:,0], Y[:,1], c=kY, cmap = "jet", edgecolor = "None", alpha=0.35)
 ax1.set_title('k-means clustering plot')
 
-ax2.scatter(X[:,0],X[:,1],  c = category, cmap = "jet", edgecolor = "None", alpha=0.35)
+ax2.scatter(Y[:,0], Y[:,1], c = category, cmap = "jet", edgecolor = "None", alpha=0.35)
 ax2.set_title('Actual clusters')
 
 plt.show()
