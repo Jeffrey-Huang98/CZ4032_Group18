@@ -19,6 +19,9 @@ $ virtualenv --system-site-packages -p python ./venv
 # activate the virtual environment
 $ source ./venv/bin/activate    # on ubuntu or macOS
 $ .\venv\Scripts\activate       # on windows
+
+# to exit the virtual environment
+(venv) $ deactivate
 ```
 
 ### Setup
