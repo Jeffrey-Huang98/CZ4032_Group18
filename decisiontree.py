@@ -8,18 +8,50 @@ from sklearn.externals.six import StringIO
 from IPython.display import Image  
 import pydotplus
 import os
+import pylab as plt
+
+features = [10, 15, 20, 25, 30]
+dectree_accuracy = []
+
+best_acc = 0
+for feat in features:
+    # preprocess data
+    trainX, testX, trainY, testY = preprocessing.preprocess(0.3, False, feat)
+
+    # build decision tree
+    dec_tree = DecisionTreeClassifier(criterion="entropy")
+    dec_tree = dec_tree.fit(trainX, trainY)
+
+    predicted = dec_tree.predict(testX)
+
+    # model Accuracy
+    acc = accuracy_score(testY, predicted)
+    dectree_accuracy.append(acc)
+    print("No of features %d accuracy %g"%(feat, acc))
+
+    if acc > best_acc:
+        best_feat = feat
+        best_acc = acc
+
+
+plt.figure()
+plt.plot(range(len(features)), dectree_accuracy)
+plt.xticks(range(len(features)), features)
+plt.xlabel('no of features')
+plt.ylabel('accuracy')
+plt.title("Accuracy against no of features")
+plt.savefig('dectree.png')
+
+print("Decision tree accuracy:", dectree_accuracy)
+print("Best no of features %d accuracy: %g"%(best_feat, best_acc))
+
 
 # preprocess data
-trainX, testX, trainY, testY = preprocessing.preprocess(0.3, False, 10)
+trainX, testX, trainY, testY = preprocessing.preprocess(0.3, False, best_feat)
 
 # build decision tree
 dec_tree = DecisionTreeClassifier(criterion="entropy")
-dec_tree = dec_tree.fit(reducedX, trainY)
-
-test_prediction = dec_tree.predict(reducedtest)
-
-# model Accuracy
-print("Accuracy:", accuracy_score(testY, test_prediction))
+dec_tree = dec_tree.fit(trainX, trainY)
 
 # adding path
 os.environ['PATH'] = os.environ['PATH']+';'+os.environ['CONDA_PREFIX']+r"\Library\bin\graphviz"
@@ -27,8 +59,9 @@ os.environ['PATH'] = os.environ['PATH']+';'+os.environ['CONDA_PREFIX']+r"\Librar
 dot_data = StringIO()
 export_graphviz(dec_tree, out_file=dot_data,  
                 filled=True, rounded=True,
-                special_characters=True,feature_names = reducedX.columns,class_names=['M','B'])
+                special_characters=True,feature_names = trainX.columns,class_names=['M','B'])
 graph = pydotplus.graph_from_dot_data(dot_data.getvalue())  
 graph.write_png('Decision Tree.png')
 Image(graph.create_png())
 
+plt.show()
