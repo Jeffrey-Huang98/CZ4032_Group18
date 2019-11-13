@@ -1,4 +1,4 @@
-import preprocessing
+import utils
 from keras.models import Sequential
 from keras.layers import Dense
 from keras import optimizers
@@ -22,7 +22,8 @@ np.random.seed(seed)
 history = []
 features = [10, 15, 20, 25, 30]
 for x in features:
-    trainX_p, testX_p, trainY_p, testY_p = preprocessing.preprocess(0.3, False, x)
+    trainX_p_, testX_p_, trainY_p_, testY_p_ = utils.preprocess(0.3, False)
+    trainX_p, testX_p, trainY_p, testY_p = utils.remove_features(x, trainX_p_, testX_p_, trainY_p_, testY_p_)
     trainY = trainY_p.replace(['B', 'M'], [1, 2])
     trainX = trainX_p.values
     trainY = trainY.values
@@ -37,7 +38,7 @@ for x in features:
     trainY_onehot[np.arange(trainY.shape[0]), trainY-1] = 1  # one hot matrix
     testY_onehot[np.arange(testY.shape[0]), testY-1] = 1  # one hot matrix
 
-    # tmp = preprocessing.remove_features(x, trainX, trainY)
+    # tmp = utils.remove_features(x, trainX, trainY)
     model = Sequential()
     model.add(Dense(num_neurons, input_dim=x, activation='relu'))
     model.add(Dense(NUM_CLASSES, activation='softmax'))
