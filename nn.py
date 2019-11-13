@@ -5,20 +5,7 @@ from keras import optimizers
 import numpy as np
 import pylab as plt
 from keras import backend as K
-from sklearn.feature_selection import RFE
-from sklearn.svm import SVR
 
-
-def remove_features(num_features, x, y):
-    estimator = SVR(kernel='linear')
-    selector = RFE(estimator, num_features, step=1)
-    selector = selector.fit(x, y)
-    arr = selector.support_
-    remove = []
-    for i in range(arr.size):
-        if not arr[i]:
-            remove.append(i)
-    return np.delete(x, remove, 1)
 
 # Initialize
 NUM_FEATURES = 30
@@ -51,7 +38,7 @@ testY_onehot[np.arange(testY.shape[0]), testY-1] = 1  # one hot matrix
 history = []
 features = [10, 15, 20, 25, 30]
 for x in features:
-    tmp = remove_features(x, trainX, trainY)
+    tmp = preprocessing.remove_features(x, trainX, trainY)
     model = Sequential()
     model.add(Dense(num_neurons, input_dim=x, activation='relu'))
     model.add(Dense(NUM_CLASSES, activation='softmax'))

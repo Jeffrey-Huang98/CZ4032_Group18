@@ -12,6 +12,20 @@ from sklearn.preprocessing import normalize
 from sklearn.metrics import confusion_matrix,accuracy_score,precision_score,recall_score,f1_score,matthews_corrcoef,classification_report,roc_curve
 from sklearn.externals import joblib
 from sklearn.preprocessing import StandardScaler
+from sklearn.feature_selection import RFE
+from sklearn.svm import SVR
+
+
+def remove_features(num_features, x, y):
+    estimator = SVR(kernel='linear')
+    selector = RFE(estimator, num_features, step=1)
+    selector = selector.fit(x, y)
+    arr = selector.support_
+    remove = []
+    for i in range(arr.size):
+        if not arr[i]:
+            remove.append(i)
+    return np.delete(x, remove, 1)
 
 def preprocess(test_size, display):
     # Read data
