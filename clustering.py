@@ -1,12 +1,7 @@
 import numpy as np # linear algebra
-import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)
-
-import matplotlib as mpl
+import pandas as pd # data processing
 import matplotlib.pyplot as plt
-import matplotlib.pyplot as plt2
-import matplotlib.cm as cm
 import preprocessing
-from subprocess import check_output
 
 # preprocess data
 trainX, testX, trainY, testY = preprocessing.preprocess(0.3, False)
@@ -27,10 +22,10 @@ kY = kmns.fit_predict(X)
 
 f, (ax1, ax2) = plt.subplots(1, 2, sharey=True)
 
-ax1.scatter(Y[:,0],Y[:,1],  c=kY, cmap = "jet", edgecolor = "None", alpha=0.35)
+ax1.scatter(X[:,0],X[:,1],  c=kY, cmap = "jet", edgecolor = "None", alpha=0.35)
 ax1.set_title('k-means clustering plot')
 
-ax2.scatter(Y[:,0],Y[:,1],  c = category, cmap = "jet", edgecolor = "None", alpha=0.35)
+ax2.scatter(X[:,0],X[:,1],  c = category, cmap = "jet", edgecolor = "None", alpha=0.35)
 ax2.set_title('Actual clusters')
 
 plt.show()
