@@ -1,4 +1,5 @@
 # Breast Cancer Prediction
+The aim of this project is to To predict whether a breast tumor is benign or malignant by means of various data mining classification techniques.
 
 ## Group
 CZ4032 Group 18
