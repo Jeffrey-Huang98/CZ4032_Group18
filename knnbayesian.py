@@ -5,7 +5,7 @@ from sklearn.metrics import accuracy_score
 from sklearn.naive_bayes import GaussianNB
 
 # preprocess data
-trainX, testX, trainY, testY = preprocessing.preprocess(0.3, False)
+trainX, testX, trainY, testY = preprocessing.preprocess(0.3, False, 10)
 
 # k-Nearest Neighbour
 K = [3, 5, 7, 11, 13, 17, 19, 23]

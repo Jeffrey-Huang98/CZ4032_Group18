@@ -9,28 +9,8 @@ from IPython.display import Image
 import pydotplus
 import os
 
-
-def features_removed(num_features, x, y):
-    estimator = RandomForestClassifier(n_estimators=10, criterion="entropy")
-    selector = RFE(estimator, num_features, step=1)
-    selector = selector.fit(x, y)
-
-    arr = selector.support_
-    remove = []
-    for i in range(arr.size):
-        if not arr[i]:
-            remove.append(x.columns[i])
-
-    return remove
-
-
 # preprocess data
-trainX, testX, trainY, testY = preprocessing.preprocess(0.3, False)
-
-# reduce number of features to 10
-remove = features_removed(10, trainX, trainY)
-reducedX = trainX.drop(remove, axis=1)
-reducedtest = testX.drop(remove,axis=1)
+trainX, testX, trainY, testY = preprocessing.preprocess(0.3, False, 10)
 
 # build decision tree
 dec_tree = DecisionTreeClassifier(criterion="entropy")
