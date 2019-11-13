@@ -14,13 +14,16 @@ from sklearn.externals import joblib
 from sklearn.preprocessing import StandardScaler
 from sklearn.feature_selection import RFE
 from sklearn.svm import SVR
-from sklearn.ensemble import RandomForestClassifier
 
 
 def remove_features(num_features, x, y):
-    estimator = RandomForestClassifier(n_estimators=10, criterion="entropy")
+    Y = y.replace(['B', 'M'], [1, 2])
+    X = x.values
+    Y = Y.values
+
+    estimator = SVR(kernel='linear')
     selector = RFE(estimator, num_features, step=1)
-    selector = selector.fit(x, y)
+    selector = selector.fit(X, Y)
     arr = selector.support_
     remove = []
     for i in range(arr.size):
