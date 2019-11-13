@@ -1,5 +1,5 @@
 # Breast Cancer Prediction
-The aim of this project is to To predict whether a breast tumor is benign or malignant by means of various data mining classification techniques.
+The aim of this project is to predict whether a breast tumor is benign or malignant by means of various data mining classification techniques.
 
 ## Group
 CZ4032 Group 18
@@ -11,7 +11,15 @@ CZ4032 Group 18
 6. Wilbert
 
 ## Requirements
-The code for this project is written in [Python](https://www.python.org/). 
+The code for this project is written in [Python](https://www.python.org/). The code needs to be run inside a virtual environment to isolate package installation from the system. To use a virtual environment, run the following command on the terminal:
+```bash
+# create virtual environment (this creates a virtual environment directory called venv)
+$ virtualenv --system-site-packages -p python ./venv 
+
+# activate the virtual environment
+$ source ./venv/bin/activate    # on ubuntu or macOS
+$ .\venv\Scripts\activate       # on windows
+```
 
 ### Setup
 All this dependencies needs to be installed using [pip](https://pypi.org/project/pip/) before running the program.
