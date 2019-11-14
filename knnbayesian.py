@@ -3,7 +3,7 @@ import pylab as plt
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score
 from sklearn.naive_bayes import GaussianNB
-
+import time
 
 # preprocess data
 trainX_, testX_, trainY_, testY_ = utils.preprocess(0.3, False)
@@ -60,13 +60,28 @@ for i in range(len(K)):
 print("Best k %d, best no of features %d, kNN accuracy %g\n"%(best_k, best_knn_feat, max_knn_acc))
 
 
+# optimal kNN
+start = time.time()
+# reduce feature
+trainX, testX, trainY, testY = utils.remove_features(best_knn_feat, trainX_, testX_, trainY_, testY_)
+
+# k-Nearest Neighbour
+model = KNeighborsClassifier(n_neighbors=best_k, weights='distance')
+model.fit(trainX, trainY)
+predicted = model.predict(testX)
+acc = accuracy_score(testY, predicted)
+knn_runtime = time.time() - start
+print('Optimal kNN runtime: ', knn_runtime)
+
+
+
 print("Naive Bayesian...")
 NB_acc = []
 for feat in features:
     # reduce feature
     trainX, testX, trainY, testY = utils.remove_features(feat, trainX_, testX_, trainY_, testY_)
 
-    # k-Nearest Neighbour
+    # NB Classifier
     model = GaussianNB()
     model.fit(trainX, trainY)
     predicted = model.predict(testX)
@@ -87,5 +102,19 @@ for i in range(len(features)):
     best_NB_feat = features[NB_acc.index(max_NB_acc)]
 
 print("Best no of features %d, Naive Bayesian accuracy %g"%(best_NB_feat, max_NB_acc))
+
+# optimal NB
+start = time.time()
+# reduce feature
+trainX, testX, trainY, testY = utils.remove_features(best_NB_feat, trainX_, testX_, trainY_, testY_)
+
+# NB Classifier
+model = GaussianNB()
+model.fit(trainX, trainY)
+predicted = model.predict(testX)
+acc = accuracy_score(testY, predicted)
+NB_runtime = time.time() - start
+print('Optimal NB runtime: ', NB_runtime)
+
 
 plt.show()

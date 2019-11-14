@@ -9,6 +9,7 @@ from IPython.display import Image
 import pydotplus
 import os
 import pylab as plt
+import time
 
 
 # preprocess data
@@ -50,12 +51,23 @@ print("Decision tree accuracy:", dectree_accuracy)
 print("Best no of features %d accuracy: %g"%(best_feat, best_acc))
 
 
+# optimal decision tree
+start = time.time()
 # reduce feature
 trainX, testX, trainY, testY = utils.remove_features(best_feat, trainX_, testX_, trainY_, testY_)
 
 # build decision tree
 dec_tree = DecisionTreeClassifier(criterion="entropy")
 dec_tree = dec_tree.fit(trainX, trainY)
+predicted = dec_tree.predict(testX)
+
+# model Accuracy
+acc = accuracy_score(testY, predicted)
+dectree_runtime = time.time() - start
+print('Optimal decision tree runtime: ', dectree_runtime)
+
+
+
 
 # adding path
 os.environ['PATH'] = os.environ['PATH']+';'+os.environ['CONDA_PREFIX']+r"\Library\bin\graphviz"
