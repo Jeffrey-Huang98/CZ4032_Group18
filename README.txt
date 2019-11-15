@@ -34,8 +34,10 @@ All this dependencies needs to be installed using [pip](https://pypi.org/project
 6. [Keras](https://keras.io/)
 7. [Tensorflow](https://www.tensorflow.org/)
 8. [Pydotplus](https://pypi.org/project/pydotplus/)
-9. [Graphviz](https://graphviz.gitlab.io/_pages/Download/Download_windows.html) and add to PATH (ie. C:\Program Files (x86)\Graphviz2.38\bin)
-10. [IPython](https://ipython.org/install.html)
+9. [IPython](https://ipython.org/install.html)
+
+Download the following package directly from the specified link
+1. [Graphviz](https://graphviz.gitlab.io/_pages/Download/Download_windows.html) and add to PATH (ie. C:\Program Files (x86)\Graphviz2.38\bin)
 
 ## Run Program
 The codes for the algorithms are written in separate files. Run the following commands for each of the algorithms from the root of the repository:
