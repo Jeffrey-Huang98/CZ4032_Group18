@@ -67,10 +67,6 @@ dectree_runtime = time.time() - start
 print('Optimal decision tree runtime: ', dectree_runtime)
 
 
-
-
-# adding path
-os.environ['PATH'] = os.environ['PATH']+';'+os.environ['CONDA_PREFIX']+r"\Library\bin\graphviz"
 # visualising decision tree
 dot_data = StringIO()
 export_graphviz(dec_tree, out_file=dot_data,  
