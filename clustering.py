@@ -36,6 +36,7 @@ ax2.scatter(Y[:-2,0], Y[:-2,1], c = category, cmap = "jet", edgecolor = "None", 
 ax2.set_title('Actual clusters')
 
 plt.show()
+plg.savefig('img/clustering.png')
 
 from sklearn.metrics import accuracy_score
 accuracy = accuracy_score(category, kY)

@@ -45,7 +45,7 @@ plt.xticks(range(len(features)), features)
 plt.xlabel('no of features')
 plt.ylabel('accuracy')
 plt.title("Accuracy against no of features")
-plt.savefig('dectree.png')
+plt.savefig('img/dectree.png')
 
 print("Decision tree accuracy:", dectree_accuracy)
 print("Best no of features %d accuracy: %g"%(best_feat, best_acc))
@@ -77,7 +77,7 @@ export_graphviz(dec_tree, out_file=dot_data,
                 filled=True, rounded=True,
                 special_characters=True,feature_names = trainX.columns,class_names=['M','B'])
 graph = pydotplus.graph_from_dot_data(dot_data.getvalue())  
-graph.write_png('Decision Tree.png')
+graph.write_png('img/Decision Tree.png')
 Image(graph.create_png())
 
 plt.show()

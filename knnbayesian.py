@@ -43,7 +43,7 @@ plt.xlabel('no of features')
 plt.ylabel('accuracy')
 plt.title("kNN Accuracy against no of features")
 plt.legend(loc='lower right')
-plt.savefig('kNN.png')
+plt.savefig('img/kNN.png')
 
 
 max_knn_acc = 0
@@ -95,7 +95,7 @@ plt.xticks(range(len(features)), features)
 plt.xlabel('no of features')
 plt.ylabel('accuracy')
 plt.title("NB Accuracy against no of features")
-plt.savefig('Naive Bayesian.png')
+plt.savefig('img/Naive Bayesian.png')
 
 for i in range(len(features)):
     max_NB_acc = max(NB_acc)

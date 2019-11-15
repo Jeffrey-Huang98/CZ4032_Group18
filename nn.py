@@ -52,10 +52,11 @@ for i in range(len(features)):
 plt.xlabel(str(num_epochs) + ' iterations')
 plt.ylabel('Metrics')
 plt.legend(loc='lower right')
+plt.savefig('img/nn.png')
 
 
 for i in range(len(history)):
     print("Number of features: " + str(features[i]))
-    print(np.mean(history[i].history['acc']))
+    print(np.mean(history[i].history['accuracy']))
 
 plt.show()
