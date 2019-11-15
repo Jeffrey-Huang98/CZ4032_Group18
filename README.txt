@@ -36,6 +36,7 @@ All this dependencies needs to be installed using [pip](https://pypi.org/project
 8. [Pydotplus](https://pypi.org/project/pydotplus/)
 9. [Graphviz](https://pypi.org/project/graphviz/)
 10. [IPython](https://ipython.org/install.html)
+11. [Conda](https://docs.conda.io/en/latest/)
 
 ## Run Program
 The codes for the algorithms are written in separate files. Run the following commands for each of the algorithms from the root of the repository:
@@ -43,7 +44,7 @@ The codes for the algorithms are written in separate files. Run the following co
 # Artificial Neural Networks
 $ python nn.py
 
-# Decision Tree
+# Decision Tree (requires Conda environment)
 $ python decisiontree.py
 
 # KNN and Naive Bayesian
