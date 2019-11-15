@@ -35,7 +35,7 @@ All this dependencies needs to be installed using [pip](https://pypi.org/project
 7. [Tensorflow](https://www.tensorflow.org/)
 
 ## Run Program
-The codes for the algorithms are written in separate files. Run the following commands from the root of the repository:
+The codes for the algorithms are written in separate files. Run the following commands for each of the algorithms from the root of the repository:
 ```bash
 # Artificial Neural Networks
 $ python nn.py
