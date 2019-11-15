@@ -35,6 +35,7 @@ All this dependencies needs to be installed using [pip](https://pypi.org/project
 7. [Tensorflow](https://www.tensorflow.org/)
 8. [Pydotplus](https://pypi.org/project/pydotplus/)
 9. [Graphviz](https://pypi.org/project/graphviz/)
+10. [IPython](https://ipython.org/install.html)
 
 ## Run Program
 The codes for the algorithms are written in separate files. Run the following commands for each of the algorithms from the root of the repository:
